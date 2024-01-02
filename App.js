@@ -1,4 +1,4 @@
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { StyleSheet } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Home from "./src/screens/Home";
@@ -8,11 +8,18 @@ import Create from "./src/screens/Create";
 import Edit from "./src/screens/Edit";
 const Stack = createNativeStackNavigator();
 
+const AppTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    bcakground: "#fff",
+  },
+};
 export default function App() {
   const user = false;
 
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={AppTheme}>
       <Stack.Navigator>
         {user ? (
           <>
