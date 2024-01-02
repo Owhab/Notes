@@ -6,15 +6,17 @@ export default function SignIn() {
   return (
     <SafeAreaView>
       <Image
-        style={{
-          alignSelf: "center",
-          width: 300,
-          height: 300,
-        }}
+        style={styles.signInImage}
         source={require("../../assets/images/empty-state.jpg")}
       />
     </SafeAreaView>
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  signInImage: {
+    alignSelf: "center",
+    width: 300,
+    height: 300,
+  },
+});

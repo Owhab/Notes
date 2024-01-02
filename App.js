@@ -12,7 +12,7 @@ const AppTheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    bcakground: "#fff",
+    background: "#fff",
   },
 };
 export default function App() {
