@@ -11,6 +11,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { colors } from "../theme/colors";
 import { spacing } from "../theme/spacing";
 import Button from "../components/text/Button/Button";
+import Input from "../components/Input/Input";
 
 export default function SignIn({ navigation }) {
   return (
@@ -21,12 +22,8 @@ export default function SignIn({ navigation }) {
       />
       <Text style={styles.signInTitle}>Never forgot your notes.</Text>
       <View style={styles.formContainer}>
-        <TextInput style={styles.input} placeholder="Email" />
-        <TextInput
-          secureTextEntry
-          style={styles.input}
-          placeholder="Password"
-        />
+        <Input placeholder="Email" />
+        <Input placeholder="Password" secureTextEntry={true} />
         <Button
           customStyles={{ marginTop: spacing[5], alignSelf: "center" }}
           title="Login "
