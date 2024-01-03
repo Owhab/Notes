@@ -15,6 +15,25 @@ const AppTheme = {
     background: "#fff",
   },
 };
+
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyDynzzkLT0cXvQdXInySPIWDGfTBM-NBQQ",
+  authDomain: "notes-89bd5.firebaseapp.com",
+  projectId: "notes-89bd5",
+  storageBucket: "notes-89bd5.appspot.com",
+  messagingSenderId: "670899573762",
+  appId: "1:670899573762:web:5ca8da1016312e2ea3c31b",
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
 export default function App() {
   const user = false;
 
