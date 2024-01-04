@@ -6,14 +6,34 @@ import {
   TextInput,
   Pressable,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { colors } from "../theme/colors";
 import { spacing } from "../theme/spacing";
 import Button from "../components/text/Button/Button";
 import Input from "../components/Input/Input";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 export default function SignIn({ navigation }) {
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
+
+  const auth = getAuth();
+
+  const signIn = () => {
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        console.log("User Logged in Succesfully. ", user.email);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log("Error: ", errorMessage);
+      });
+  };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Image
@@ -22,11 +42,16 @@ export default function SignIn({ navigation }) {
       />
       <Text style={styles.signInTitle}>Never forgot your notes.</Text>
       <View style={styles.formContainer}>
-        <Input placeholder="Email" />
-        <Input placeholder="Password" secureTextEntry={true} />
+        <Input placeholder="Email" onChangeText={(text) => setEmail(text)} />
+        <Input
+          placeholder="Password"
+          secureTextEntry={true}
+          onChangeText={(text) => setPassword(text)}
+        />
         <Button
           customStyles={{ marginTop: spacing[5], alignSelf: "center" }}
           title="Login "
+          onPress={signIn}
         />
       </View>
       <View style={styles.signUpText}>
