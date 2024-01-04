@@ -1,53 +1,80 @@
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  TextInput,
-  Pressable,
-} from "react-native";
 import React, { useMemo, useState } from "react";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { colors } from "../theme/colors";
 import { spacing } from "../theme/spacing";
 import Button from "../components/text/Button/Button";
 import Input from "../components/Input/Input";
-import { RadioGroup } from "react-native-radio-buttons-group";
+import RadioButtonRN from "radio-buttons-react-native";
+
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 export default function SignUp({ navigation }) {
-  const [selectedId, setSelectedId] = useState();
+  const [selectedGender, setSelectedGender] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
+  const [name, setName] = useState(null);
+  const [age, setAge] = useState(null);
+
+  const selectGender = (gender) => {
+    setSelectedGender(gender.value);
+  };
+
+  const auth = getAuth();
+
+  const signUp = () => {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredentials) => {
+        const user = userCredentials.user;
+        console.log("user: ", user);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+      });
+  };
+
   const genders = useMemo(
     () => [
       {
-        id: "1",
         label: "Male",
         value: "male",
       },
       {
-        id: "2",
         label: "Female",
         value: "female",
       },
     ],
     []
   );
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <Text style={styles.signInTitle}>Never forgot your notes.</Text>
+      <Text style={styles.signInTitle}>Never forget your notes.</Text>
       <View style={styles.formContainer}>
-        <Input placeholder="Full Name" />
-        <Input placeholder="Your Email" />
-        <Input placeholder="Password" secureTextEntry={true} />
-        <Input placeholder="Age" />
-        <RadioGroup
-          containerStyle={styles.genders}
-          radioButtons={genders}
-          onPress={setSelectedId}
-          selectedId={selectedId}
+        <Input placeholder="Full Name" onChangeText={(text) => setName(text)} />
+        <Input
+          placeholder="Your Email"
+          onChangeText={(text) => setEmail(text)}
+        />
+        <Input
+          placeholder="Password"
+          secureTextEntry={true}
+          onChangeText={(text) => setPassword(text)}
+        />
+        <Input placeholder="Age" onChangeText={(text) => setAge(text)} />
+        <RadioButtonRN
+          data={genders}
+          selectedBtn={(e) => selectGender(e)}
+          circleSize={20}
+          textStyle={{ color: colors.black }}
+          initial={-1}
         />
         <Button
           customStyles={{ marginTop: spacing[5], alignSelf: "center" }}
           title="Sign Up "
+          onPress={signUp}
         />
       </View>
       <View style={styles.signUpText}>
@@ -80,16 +107,10 @@ const styles = StyleSheet.create({
   formContainer: {
     padding: spacing[6],
   },
-
   signUpText: {
     alignItems: "center",
     justifyContent: "flex-end",
     paddingBottom: spacing[10],
     flex: 1,
-  },
-  genders: {
-    textAlign: "left",
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
   },
 });
