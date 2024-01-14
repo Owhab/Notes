@@ -6,8 +6,19 @@ import { spacing } from "../theme/spacing";
 import Button from "../components/text/Button/Button";
 import Input from "../components/Input/Input";
 import RadioButtonRN from "radio-buttons-react-native";
+import { auth, db } from "../../App";
+import {
+  addDoc,
+  collection,
+  getDoc,
+  doc,
+  onSnapshot,
+  query,
+  where,
+} from "firebase/firestore";
 
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { showMessage } from "react-native-flash-message";
 
 export default function SignUp({ navigation }) {
   const [selectedGender, setSelectedGender] = useState(null);
@@ -20,19 +31,35 @@ export default function SignUp({ navigation }) {
     setSelectedGender(gender.value);
   };
 
-  const auth = getAuth();
-
-  const signUp = () => {
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredentials) => {
-        const user = userCredentials.user;
-        console.log("user: ", user);
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
+  const signUp = async () => {
+    try {
+      const result = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      await addDoc(collection(db, "users"), {
+        name: name,
+        email: email,
+        age: age,
+        gender: selectedGender,
+        uid: result.user.uid,
       });
+      console.log("result: ", result);
+    } catch (error) {
+      console.log("Error: ", error);
+      showMessage({ message: error.message });
+    }
+    // createUserWithEmailAndPassword(auth, email, password)
+    //   .then((userCredentials) => {
+    //     const user = userCredentials.user;
+    //     console.log("user: ", user);
+    //   })
+    //   .catch((error) => {
+    //     const errorCode = error.code;
+    //     const errorMessage = error.message;
+    //     console.log(errorCode, errorMessage);
+    //   });
   };
 
   const genders = useMemo(

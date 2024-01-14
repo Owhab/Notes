@@ -18,6 +18,9 @@ const AppTheme = {
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+import FlashMessage from "react-native-flash-message";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -33,6 +36,8 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+export const auth = getAuth(app);
+export const db = getFirestore(app);
 
 export default function App() {
   const user = false;
@@ -61,6 +66,7 @@ export default function App() {
           </>
         )}
       </Stack.Navigator>
+      <FlashMessage position="bottom" />
     </NavigationContainer>
   );
 }
